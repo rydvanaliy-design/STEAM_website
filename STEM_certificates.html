@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHINDAMANEE SCHOOL | Innovation Showcase 2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@0.5.21/dist/vanta.net.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #00bcd4; /* Cyan */
+            --secondary-color: #ff9800; /* Orange */
+            --background-dark: #212121; /* Dark Gray */
+            --background-light: #424242; /* Slightly Lighter Dark Gray */
+            --text-color-light: #e0e0e0; /* Light Gray for text */
+            --text-color-accent: #ffffff; /* White for accents */
+            --border-color: #616161; /* Medium Gray */
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto Mono', monospace;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+            background-color: var(--background-dark);
+            color: var(--text-color-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #vanta-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.7; /* Slightly transparent to let background color show */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            width: 100%; /* Ensure container takes full width on small screens */
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+
+        /* School Logo */
+        .school-logo-container {
+            text-align: center;
+            margin: 20px auto 0; /* Center top */
+            position: relative;
+            z-index: 2; /* Ensure it's above other elements if needed */
+            max-width: 100%; /* Ensure it's responsive */
+        }
+
+        .school-logo {
+            width: 100px; /* Adjust size as needed */
+            height: auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px 0;
+            border-bottom: 2px solid var(--border-color);
+            animation: fadeInDown 1s ease-out;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary-color);
+            font-size: 3.8rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px var(--primary-color), 0 0 30px rgba(0, 255, 255, 0.3);
+        }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--secondary-color);
+            font-size: 2.2rem;
+            margin-top: 0;
+            text-shadow: 0 0 10px var(--secondary-color);
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-color-accent);
+            margin-bottom: 20px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        /* Main Menu Grid for subsection buttons */
+        .main-menu-grid, .project-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+            padding: 0 10px;
+        }
+
+        .menu-button, .project-item {
+            background: var(--background-light);
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            text-shadow: 0 0 8px rgba(0, 188, 212, 0.5);
+            min-height: 120px; /* Ensure buttons have a consistent height */
+        }
+
+        .menu-button:hover, .project-item:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+            border-color: var(--primary-color);
+        }
+
+        /* Content Sections Styling */
+        .content-section {
+            background: var(--background-light);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            margin-top: 20px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 90%;
+            box-sizing: border-box;
+        }
+
+        .content-section h2 {
+            color: var(--secondary-color);
+            font-family: 'Orbitron', sans-serif;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .content-section p {
+            font-family: 'Roboto Mono', monospace;
+            line-height: 1.6;
+            font-size: 1rem;
+            color: var(--text-color-light);
+        }
+
+        /* Search Bar Styles */
+        .search-container {
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid var(--primary-color);
+            border-radius: 50px;
+            background-color: var(--background-dark);
+            color: var(--text-color-light);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-container input::placeholder {
+            color: var(--border-color);
+        }
+
+        .search-container input:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
+        }
+
+        .project-list {
+            margin-top: 20px;
+            background: var(--background-dark);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .project-item {
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 3px solid var(--secondary-color);
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            cursor: default;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            font-size: 1rem;
+            font-family: 'Roboto Mono', monospace;
+            color: var(--text-color-light);
+            min-height: auto;
+        }
+
+        .project-item span {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+
+        .project-item .links-container {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 5px;
+        }
+
+        .project-item a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-size: 0.9em;
+            padding: 5px 10px;
+            border: 1px solid var(--secondary-color);
+            border-radius: 5px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .project-item a:hover {
+            background-color: var(--secondary-color);
+            color: var(--background-dark);
+            text-decoration: none;
+        }
+
+        .back-btn {
+            display: none;
+            margin: 30px auto;
+            padding: 12px 25px;
+            background: var(--primary-color);
+            color: var(--background-dark);
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 188, 212, 0.4);
+            font-family: 'Roboto Mono', monospace;
+            font-weight: bold;
+            letter-spacing: 0.05em;
+        }
+
+        .back-btn:hover {
+            background: #00acc1;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 188, 212, 0.6);
+        }
+        
+        .download-all-btn {
+            background: var(--secondary-color);
+            color: var(--background-dark);
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-family: 'Roboto Mono', monospace;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(255, 152, 0, 0.4);
+        }
+        
+        .download-all-btn:hover {
+            background: #f57c00;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(255, 152, 0, 0.6);
+        }
+        
+        .download-certificate-btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 4px;
+            border: none;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1rem;
+            font-weight: bold;
+            width: 100%;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            margin-top: 5px;
+            letter-spacing: 0.5px;
+        }
+        
+        .download-certificate-btn:hover {
+            background-color: #00a0b4;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .animated-icon {
+            position: absolute;
+            font-size: 30px;
+            color: rgba(255, 255, 255, 0.2);
+            animation: floatAndFade 5s linear infinite;
+            pointer-events: none;
+            opacity: 0;
+            transform-origin: center;
+        }
+
+        @keyframes floatAndFade {
+            0% { transform: translateY(0) rotate(0deg) scale(0.5); opacity: 0; }
+            20% { opacity: 0.5; }
+            80% { opacity: 0.5; }
+            100% { transform: translateY(-100px) rotate(360deg) scale(1.2); opacity: 0; }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: var(--border-color);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+            animation: fadeIn 2s ease-in;
+            background-color: rgba(0,0,0,0.2);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 1.6rem; }
+            .subtitle { font-size: 0.9rem; }
+            .main-menu-grid, .project-list {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 20px;
+                padding: 0 15px;
+            }
+            .menu-button, .project-item { padding: 20px; }
+            .menu-button { font-size: 1.3rem; min-height: 100px; }
+            .project-item { font-size: 1rem; }
+            .student-item, .project-item {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px 15px;
+            }
+            .project-item span { margin-bottom: 5px; margin-right: 0; }
+            .project-item a { margin-top: 5px; width: auto; text-align: center; }
+            .project-item .links-container {
+                flex-direction: column;
+                width: 100%;
+                gap: 5px;
+            }
+            .project-item .links-container a { width: 100%; }
+            .container { padding: 15px; }
+            .search-container { padding: 0 15px; }
+            .content-section h2 { font-size: 1.8rem; }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.2rem; }
+            .subtitle { font-size: 0.8rem; }
+            .main-menu-grid, .project-list {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                padding: 0 10px;
+            }
+            .menu-button, .project-item { padding: 15px; }
+            .menu-button { font-size: 1.1rem; min-height: 80px; }
+            .project-item { font-size: 0.9rem; }
+            .content-section { padding: 15px; width: 95%; }
+            .project-item { padding: 8px 10px; }
+            .project-item a { font-size: 0.8em; padding: 4px 8px; }
+            .content-section h2 { font-size: 1.5rem; }
+        }
+    	    .floating-icons {
+ 			 pointer-events: none;
+		}
+			.floating-icons span {
+			  pointer-events: none;
+		}
+
+    </style>
+</head>
+<body>
+    <div id="vanta-bg"></div>
+
+    <!-- Animated background icons -->
+    <div class="animated-icon" style="top: 10%; left: 15%;">🔬</div>
+    <div class="animated-icon" style="top: 20%; right: 10%;">⚙️</div>
+    <div class="animated-icon" style="bottom: 15%; left: 25%;">⚛️</div>
+    <div class="animated-icon" style="top: 40%; left: 5%;">📊</div>
+    <div class="animated-icon" style="bottom: 5%; right: 20%;">💻</div>
+
+    <div class="container">
+        <div class="school-logo-container">
+            <!-- Replace with your actual school logo URL -->
+            <img src="https://drive.google.com/thumbnail?id=1q1jcCyucpGrqaDEXCyzBsfAdKXDmW0yp=s200" alt="School Logo" class="school-logo">
+        </div>
+
+        <header>
+            <h1>CHINDAMANEE SCHOOL</h1>
+            <h2 id="mainHeaderTitle">Innovation Showcase 2025</h2>
+            <div class="subtitle" id="mainSubtitle">Digital Certificates & Project Data</div>
+        </header>
+
+        <!-- Main Section Selection Buttons -->
+        <div id="mainMenu" class="main-menu-grid">
+            <!-- Buttons will be dynamically inserted here by JavaScript -->
+        </div>
+
+        <!-- Individual Content Sections (initially hidden) -->
+        <div id="contentSection" class="content-section" style="display: none;">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search for names...">
+            </div>
+            <h2 id="sectionTitle"></h2>
+            <p id="sectionDescription" style="text-align: center;"></p>
+
+            <div class="project-list" id="projectListContainer">
+                <!-- Project items will be dynamically inserted here -->
+            </div>
+            <button class="back-btn" id="backBtn">← Back</button>
+        </div>
+
+        <!-- Global Back to Main Menu Button -->
+        <button class="back-btn" id="backToMainMenuBtn">← Back to Main Menu</button>
+        
+        <div class="footer"> Analyzing the future, one innovation at a time.<br> Digital Assets available for retrieval until December 31, 2025. </div>
+    </div>
+
+    <!-- Audio elements for background music and click sound -->
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="clickSound">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+    <script>
+        const projectData = {
+            "DIY Rubber Band Plane Launching": [
+                { name: "Aayush Upadhyay", link: "https://drive.google.com/uc?export=download&id=1SITtI1_xpXELEJSGKmN0KKm-Ns3a9Aaa" },
+                { name: "Ahmadbinn Tareq", link: "https://drive.google.com/uc?export=download&id=1uBzIXO-zYDTwOJJwtpTg5wgUFPDHpYVj" },
+                { name: "Aisha Shahab Al Marri", link: "https://drive.google.com/uc?export=download&id=11V5yizW9p0TF0lfYy60WKRvUttxQgr7C" },
+                { name: "Aliza", link: "https://drive.google.com/uc?export=download&id=1mn4qMWq0Gb0Ew6H_rWR8DJURrLVbposw" },
+                { name: "Anawin Salem",  link: "https://drive.google.com/uc?export=download&id=10PNAv43zOPex43tViJgqlAkfUV2Db6uZ" },
+                { name: "Chanderkant Pandey",  link: "https://drive.google.com/uc?export=download&id=1KdyZ12dorVkAfIzNY9JePajtW_HL5cUe" },
+                { name: "Farhan Malik",  link: "https://drive.google.com/uc?export=download&id=1PBKCSdT56HvuUc3a-421mIHCbn1JX_9h" },
+                { name: "Gulbahar Guvanchmyradova",  link: "https://drive.google.com/uc?export=download&id=1WLrm6ZTMf99GpGcrWnRGJ8eDpWNDDzj_" },
+                { name: "Jiratchaya",  link: "https://drive.google.com/uc?export=download&id=1uuzE8nFw8cKiXm7A7If8Ld_hU7fGomBF" },
+                { name: "Klarissa pawa",  link: "https://drive.google.com/uc?export=download&id=1obysxVW2-Eg2F-7FAdZI-PNYjvWOHh82" },
+                { name: "Krittiphat Tangvattanatam",  link: "https://drive.google.com/uc?export=download&id=1xz8qlXvir5zGA5URYkexLa1cZboxLYNJ" },
+                { name: "Muhammad Umar Nauman",  link: "https://drive.google.com/uc?export=download&id=1pjERTXaPCkAeTrSXlNTHr9yfBISxbHO9" },
+                { name: "Myat Thazin Khine",  link: "https://drive.google.com/uc?export=download&id=1Apja7FdPudAvGpSoHnLK_ibfHxIl_LlR" },
+                { name: "Natthanon suchahiran",  link: "https://drive.google.com/uc?export=download&id=1YmZp6-liDSAsbZA3Vl9PeVBRFpHQlcvJ" },
+                { name: "Peerapol Chokwanamnuai",  link: "https://drive.google.com/uc?export=download&id=1_cBqyMh2rRUYEuVrbB92hdINKyHVbd5Y" },
+                { name: "Pichaiyut Yatacot",  link: "https://drive.google.com/uc?export=download&id=1NWxzdH_Hg_cSkBOnbU218Jqiu05g8VWC" },
+                { name: "Royyim Bindusmita",  link: "https://drive.google.com/uc?export=download&id=1YXwzCbCmKF7dmoOKDOrq5Ws7R-oI5csR" },
+                { name: "Tat Boonpornpichet",  link: "https://drive.google.com/uc?export=download&id=14DezdwljcgA4nGN7ropbrzvV_xyvb6Vq" }
+            ],
+            "Judges": [
+                { name: "Dr. Asma Parilti",  link: "https://drive.google.com/uc?export=download&id=1LXWJFAYSxEVJ_jisKypHQTIg1EKLMx5r" },
+                { name: "Mr. Eugene Dickson",  link: "https://drive.google.com/uc?export=download&id=1q0CFC0E4k509mmDYLHfQd5nHm7fCyAXU" },
+                { name: "Mr. Jesse Johnson",  link: "https://drive.google.com/uc?export=download&id=1iqdmgAP4erMj1oHDiCAo40BEQQhXZkhK" },
+                { name: "Mr. Karl Robinson",  link: "https://drive.google.com/uc?export=download&id=154HxuOa8DGTpXmgcG-7VZRV5li_dLCCd" },
+                { name: "Mr. Murat Mendi",  link: "https://drive.google.com/uc?export=download&id=1sDF8zxFX9uuXNxu-louxddgfV1FI0dHo" },
+                { name: "Mr. Myrat Hezretov",  link: "https://drive.google.com/uc?export=download&id=1yRV2cTuEpHBx5XCrtSy53Xp3oIfujsjl" },
+                { name: "Mr. Nozimjon Musoev",  link: "https://drive.google.com/uc?export=download&id=1eYahnJ-vVKUBEcVYQ9Bt8qfreyleK8rU" },
+                { name: "Mr. Serdar Rozyyev",  link: "https://drive.google.com/uc?export=download&id=1ZrM1iYocuEn7ZJIM4lSRwW3WwKFsXiAZ" },
+                { name: "Ms. Khawanjai Traikaew",  link: "https://drive.google.com/uc?export=download&id=1CRMHyJfutusbyMPi_avEQ_-IVxxRcDHK" },
+                { name: "Ms. Menchie Reynoso",  link: "https://drive.google.com/uc?export=download&id=1kiuVa4bzrqfPp4h05DmVM5xWxkqs3dak" }
+            ],
+            "Public Speaking": [
+                { name: "Aayush Upadhyay",  link: "https://drive.google.com/uc?export=download&id=1rt5fwQKRUMlJipyX_TUxlMuPM0QlmbKD" },
+                { name: "Ahmad Bin Tareq",  link: "https://drive.google.com/uc?export=download&id=1imfwixLk8VTr8MQRk_WUd-sw5h7_ZWrs" },
+                { name: "Aisha Shahab Navalta Al Marri",  link: "https://drive.google.com/uc?export=download&id=1VeyE6dFIROH9rTvBGyMsxEeyxhSgVN1k" },
+                { name: "Alessia Piedrahita",  link: "https://drive.google.com/uc?export=download&id=1psfoESE-pm8MoNN6bJN4A28YFf4bBNXC" },
+                { name: "Anawin Salem",  link: "https://drive.google.com/uc?export=download&id=15VhQVd_nYefUwHfi7WlaxRkQpIT6KcgY" },
+                { name: "Azmina Diwan",  link: "https://drive.google.com/uc?export=download&id=18m4ykJ5BQc1KKV4jC5Yj0nVOErRehLDs" },
+                { name: "Chanderkant Pandey",  link: "https://drive.google.com/uc?export=download&id=10iG1soktAnWN1vwQpPjjef9uiatVFZZs" },
+                { name: "Chennan Nakphoo",  link: "https://drive.google.com/uc?export=download&id=1YMELnAdoEwhVqCv7AcNQGtq-HeLNFEmo" },
+                { name: "Chingun Yajai",  link: "https://drive.google.com/uc?export=download&id=1myoSJ5N3GYwzfXIjwHDnbeb9Ssp5sIoR" },
+                { name: "Ekrem Esat Mendi",  link: "https://drive.google.com/uc?export=download&id=1Io_l_ZMT9o7BoAjI8xZZ_FnjfZePT9BL" },
+                { name: "EunSol Woo",  link: "https://drive.google.com/uc?export=download&id=1SonN__rCZh2EiZoKL72HyKbhXNsWpUuY" },
+                { name: "Gulbahar Guvanchmyradova",  link: "https://drive.google.com/uc?export=download&id=1-U3nqlnlLVKl1AlG9qiSorkdMlVBQF8f" },
+                { name: "Hasan Banna",  link: "https://drive.google.com/uc?export=download&id=1jcu4AYXwJI4OUOIIf62ZoKYadArU3xsX" },
+                { name: "Janaru Makhsat",  link: "https://drive.google.com/uc?export=download&id=110jqEXUECrJJ4S7ZLyRQQe3AYYrkOfBD" },
+                { name: "Khalil Hendra Verdian",  link: "https://drive.google.com/uc?export=download&id=1_SBA2yNHDVRupAQIodSqdmZ0B6dMto6s" },
+                { name: "Leyli Rozyyeva",  link: "https://drive.google.com/uc?export=download&id=1XFNHUN3VPF9BLmuBwFVL9I2Ss4bk9ll2" },
+                { name: "Margaret Majorie Barnard",  link: "https://drive.google.com/uc?export=download&id=1jxZ9N1FicuAJABpDGB1zCzMLQrYx1mTU" },
+                { name: "Muhammad Shahzad",  link: "https://drive.google.com/uc?export=download&id=10WfxPkakth76O0oFLzjPWpz_54_VtHSy" },
+                { name: "Myat Thazin Khine",  link: "https://drive.google.com/uc?export=download&id=1oC0v6wSEFBehkLHqYVsQdN5wpeqhnzse" },
+                { name: "Nikitha Kuppuswamy Vijayakumar",  link: "https://drive.google.com/uc?export=download&id=1wJ_QXwlRwqlBBUcCMdkxvnfaBJjTbqg-" },
+                { name: "Nopwadee Wongsangiam",  link: "https://drive.google.com/uc?export=download&id=1_BehrIVQQ2PwLcsCRiVIUQ6mrl2ITbWZ" },
+                { name: "Nuoyuan Chen",  link: "https://drive.google.com/uc?export=download&id=1GQc5t8Gz_V6hCYkQJC8bSxpuIRvo2J2N" },
+                { name: "Osman Cholak",  link: "https://drive.google.com/uc?export=download&id=1k0FcEymIV_WqOQuQt4-1GRseq77826Jt" },
+                { name: "Pattaraporn Jitpakdee",  link: "https://drive.google.com/uc?export=download&id=1kLmN8pQr3sT5vHxYzF9dRe7GbP4tWqXz" },
+                { name: "Pavani Pandey",  link: "https://drive.google.com/uc?export=download&id=1fNI46fHXtHHnV_Vy0b4sAS1th6bvbmV5" },
+                { name: "Peeranat Amarananthakit",  link: "https://drive.google.com/uc?export=download&id=1M9WG-Y8B6jh5hYUIms6vbnRnwE8DzTeW" },
+                { name: "Piyush Sharma",  link: "https://drive.google.com/uc?export=download&id=1eRtY7mKpL8xDvF2qZ3nHs9jWpV5fGx4T" },
+                { name: "Phuritat Tangvattanatam",  link: "https://drive.google.com/uc?export=download&id=1je91cgHtR-44OLKlj6Z_6YFA2Ux3nPpQ" },
+                { name: "Raiyan Rahman",  link: "https://drive.google.com/uc?export=download&id=1EgrW7Dk3VSELMFAyc2NrDFjTolVReJlw" },
+                { name: "Rydvanali Yessimkhan",  link: "https://drive.google.com/uc?export=download&id=13yEQetDGu_JuLHIyBbX0K1U2koGz5jaw" },
+                { name: "Sai Sanjana Reddy",  link: "https://drive.google.com/uc?export=download&id=1Nt-Ot9Yd-Oe-Yx-Ow-Ot-Oe-Yx-Ow-Ot" },
+                { name: "Soha Shahzad",  link: "https://drive.google.com/uc?export=download&id=1jwblwJmZz6Ju5dklA-cgYeY68qIxAvSc" },
+                { name: "Suha Malik",  link: "https://drive.google.com/uc?export=download&id=1yX-uleNnLxyCPws4ShB4L-Sjvba1Wx5W" },
+                { name: "Tanaphat Chaiwanchana",  link: "https://drive.google.com/uc?export=download&id=1OhWyVyPOuKEQAcaHRGzJoQaQxkqdtzoU" },
+                { name: "Xinyu Shi",  link: "https://drive.google.com/uc?export=download&id=1EYtEMvMwkZZfjF3vAdT7boQoJxn-F989" },
+                { name: "Zahide Hilal Parilti",  link: "https://drive.google.com/uc?export=download&id=1ChcHjneSSQ-KSF30ip8HQH7ljMFQ5h3i" },
+                { name: "Zehra Mendi",  link: "https://drive.google.com/uc?export=download&id=1Cuyblm5wDjH55GxZyqAJDmCQpi7K2snO" },
+                { name: "Ziva Abbigail Barnard",  link: "https://drive.google.com/uc?export=download&id=17a5NA-HOwIbHfZhKL9hDqnHhxubFcHzC" }
+            ],
+            "Quiz Masters": [
+                { name: "Aaliya Singnamwong",  link: "https://drive.google.com/uc?export=download&id=1Xxz9fllA6wW79s-sQmKYLdOviHD03l9A" },
+                { name: "Ahmad Bin Tareq",  link: "https://drive.google.com/uc?export=download&id=1RazWRJxzp_L4NSpVffdALTJmPGOEw8F7" },
+                { name: "Alexei Ray Yeagershporin",  link: "https://drive.google.com/uc?export=download&id=1GKfETfeuGlffb43Hxg0xY1f3V4sKPVEx" },
+                { name: "Aliza Chen Fei Wai",  link: "https://drive.google.com/uc?export=download&id=1E0nFE6_VQ6APBeQaWXXBgACqwFuT15q4" },
+                { name: "Amalia Bashlykova",  link: "https://drive.google.com/uc?export=download&id=1te8tPVRyZi9EagjO_or2OqUoPS3KB0wb" },
+                { name: "Areeyah Avageline Dulude",  link: "https://drive.google.com/uc?export=download&id=1huWuUO3NI9e6XXX9EuHjtHTKG5cVu73m" },
+                { name: "Asato Deevongkij",  link: "https://drive.google.com/uc?export=download&id=1u_5CbnhVuocgUKcbY3z5K-4xLo6BD1Jz" },
+                { name: "Aung Nyein Chan",  link: "https://drive.google.com/uc?export=download&id=1758qJV6eMORF-jvB_fwbfYuyYVm5a9vY" },
+                { name: "Avishi Mehrotra",  link: "https://drive.google.com/uc?export=download&id=15EVghZlYF4TZrGaZKfLoMpIP0v9QSOzr" },
+                { name: "Chonnaphat Thumrat",  link: "https://drive.google.com/uc?export=download&id=1HfAsc4I59ekLM7H1nJsfWx6oazJa-in0" },
+                { name: "Chuu Nadi Lwin",  link: "https://drive.google.com/uc?export=download&id=11uWOxbLC3DqupjYuyWIjul1UtYGrVqMh" },
+                { name: "Esat Guvanchmyradov",  link: "https://drive.google.com/uc?export=download&id=1qJGGOyNX5DVcaL86WhtFFL-1heuKzbJY" },
+                { name: "Hpone Pyae Thi Ha",  link: "https://drive.google.com/uc?export=download&id=1COs3MziuLaXBTzueT3LzctSYAe_2x8RR" },
+                { name: "Jemal Ikhsan Yessimkhan",  link: "https://drive.google.com/uc?export=download&id=1gioRiUOS7xcCEuqttLqkHa4NeWWw8TzY" },
+                { name: "Jittrawee Janjamroon",  link: "https://drive.google.com/uc?export=download&id=1SKTeyAqXLCVXjs6FT69aL2zUQsClZS9w" },
+                { name: "Kanpitcha Pasaprates",  link: "https://drive.google.com/uc?export=download&id=1LXGdrKCU8NpNwsV660ENXxx-2FEbBRMY" },
+                { name: "Katherina Khanijou",  link: "https://drive.google.com/uc?export=download&id=1svV8cAEmD_KPvTc2GWD2JtOTs5Vz-vRg" },
+                { name: "Kevin Koder",  link: "https://drive.google.com/uc?export=download&id=1Gjn5cW4OdcegsYzbQby2DURhu50fG0dF" },
+                { name: "Kittisak Sachahiran",  link: "https://drive.google.com/uc?export=download&id=1dCmPC8EBGO8ys3Vo6xwNhBxBiXK4WHkw/" },
+                { name: "Kris Khanijou",  link: "https://drive.google.com/uc?export=download&id=1TQbN2lUrVsdDL9x7Ib46gDsAFfhbEfp3" },
+                { name: "Layaung Phong Myint",  link: "https://drive.google.com/uc?export=download&id=1pxO6hS4Bf3RT0i7RRpjppxe0_qSH3Ced" },
+                { name: "Nantachat Korkietnan",  link: "https://drive.google.com/uc?export=download&id=1InQiaKYlxJBLFiqnTkazZ3aJGTmpEFZP" },
+                { name: "Oscar Ruan",  link: "https://drive.google.com/uc?export=download&id=1aMZGKU0F-7lHOJv-PZBvyiYqz9pAAtjV" },
+                { name: "Osman Cholak",  link: "https://drive.google.com/uc?export=download&id=1U2FJ9vg_wFaSqwq1DIAoFzCD7XstUYYf" },
+                { name: "Patharadit Budhnarakul",  link: "https://drive.google.com/uc?export=download&id=1j-w5opq8yHFAmnWgqKQurW9RrIFqU7jL" },
+                { name: "Petpairin Chotwannapong",  link: "https://drive.google.com/uc?export=download&id=1jTv_hxp29zMMYjPdDxBZLHPkOsv5TGvA" },
+                { name: "Phatthadol Chairattanathananon",  link: "https://drive.google.com/uc?export=download&id=1SkTkZtw8o0en7-ehXxIqYP5ih_lwPnzk" },
+                { name: "Punchida Angsukulthom",  link: "https://drive.google.com/uc?export=download&id=1njO4eOa5Z1ZlphqRMiljWH9Px9cPZQjI" },
+                { name: "Ratchanon Deachapun",  link: "https://drive.google.com/uc?export=download&id=1N16ZVQbTaxslAVtJfEVnLhVrZHQfe0ag" },
+                { name: "Royyim Bindusmita",  link: "https://drive.google.com/uc?export=download&id=1Un__r3G9McqCHz1KY5r1gKvLtP6jeAzW" },
+                { name: "Santisiri Buamuenchol",  link: "https://drive.google.com/uc?export=download&id=1sze3Ay8YxXeoKmaFYyVpzsVyJOnAMFNU" },
+                { name: "Sethwarich Arpajamjarat",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Sett Linn Lett",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Sophitthanatcha Chaviengpop",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Swan Htet Aung",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Tanut Puengmongkholchaikij",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Tawee Namnanthasith",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Thanaphoom Sampancharoen",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Thanat Labthaweechai",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Thanon Torung",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Wipada Sakolnuruk",  link: "https://drive.google.com/uc?export=download&id=" }
+            ],
+            "Robot Maze Race": [
+               { name: "Heint Khant Maung",  link: "https://drive.google.com/uc?export=download&id=" },
+               { name: "Intouch Rampai",  link: "https://drive.google.com/uc?export=download&id=" },
+               { name: "Jessada Odlin",  link: "https://drive.google.com/uc?export=download&id=" },
+               { name: "Jirat Suebhirun",  link: "https://drive.google.com/uc?export=download&id=" },
+               { name: "Kevin Kroder",  link: "https://drive.google.com/uc?export=download&id=" },
+               { name: "Saw Thit Lwin Htet",  link: "https://drive.google.com/uc?export=download&id=" },
+               { name: "Shlok Chand",  link: "https://drive.google.com/uc?export=download&id=" },
+               { name: "Tawee Namnanthasith",  link: "https://drive.google.com/uc?export=download&id=" },
+               { name: "Thanakrit Pawa",  link: "https://drive.google.com/uc?export=download&id=" },
+               { name: "Thaw Zin Nyi",  link: "https://drive.google.com/uc?export=download&id=" }
+            ],
+            "Science Show": [
+                { name: "Adichat Sirisukhaanand",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Agayusup Rozyyev",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Eun Sol Woo",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Hasan Banna",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Hasan Ertan",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Klarissa Pawa",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Leyli Rozyyeva",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Phuritat Tangvattanatam",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Raiyan Rahman",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Shahin Cholak",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Suha Malik",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Suphanut Rai",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Zehra Mendi",  link: "https://drive.google.com/uc?export=download&id=" }
+            ],
+            "Spaghetti & Marshmallow Tower": [
+                { name: "Aarav Detchaiyasak",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Ahmad Bin Tareq",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Aliza Chen Fei Wai",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Chuu Nadi Lwin",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Hana Marie Hamill",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Ian Katnikov",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Katherina Khanijou",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Muhammad Zain Nauman",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Nantachat Korkietnan",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Nevra Sayin",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Orhan Ertan",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Panyaraht Ifeanyichukwu",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Punchida Angsukulthorn",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Qian Qian Zhou",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Reuben Eldho Mathew",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Sophitthanatcha Chaviengpop",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Thanasa Chuenkwanlert",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Thawanrat Kijsrisakul",  link: "https://drive.google.com/uc?export=download&id=" }
+            ],
+            "STEAM Street": {
+                "Game Category": [
+                    { name: "Aandeep Singh",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Aarohi Dubey",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Ahmad Hassan",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Ahr Nan",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Aisha Shahab Navalta Al Marri",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Azmina Diwan",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Benjapron Laikrah",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Gulbahar Guvanchmyradova",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Hamza Hossain Hadi",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Huzaifa Hussain",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Klarissa Pawa",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Krittiphat Tangvattanatam",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Lwin Phone Pyae",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Mona Sangroula",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Muhammad Shahzad",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Myat Thazin Khine",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Nesha Kittipunnapha",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Nicholas",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Phuririn Narapattaveebhorn",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Princeshan Gulati",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Raihana Leelard",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Sarisa Pichayapa",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Thant Thurain",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Thawin Kantithatkun",  link: "https://drive.google.com/uc?export=download&id=" }
+                ],
+                "Integrated Category": [
+                    { name: "Aphiwish Jongpipatthanasuk",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Boonyaporn Matragool",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Ekem Mendi",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Hugo Ruan",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Muna Songweera",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Peerapol Chokwanamnuai",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Supawich Silapa-acha",  link: "https://drive.google.com/uc?export=download&id=" },
+                    { name: "Warot Kongsoontornkijkun",  link: "https://drive.google.com/uc?export=download&id=" }
+                ]
+            },
+            "Technical Team": [
+                { name: "Peeranat Thoumprathom",  link: "https://drive.google.com/uc?export=download&id=" }
+            ],
+            "Upcycled Fashion Show": [
+                { name: "Aaliya Singnamwong",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Aisha Shahab Navalta Al Marri",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Alessia Piedrahita",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Azmina Diwan",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Chanyaphak Aukramaeteepun",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Gulbahar Guvanchmyradova",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Janaru Makhsat",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Jiratchaya Tangyusuk",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Kaewta Kitinai",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Lingqi Chen",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Margaret Majorie Barnard",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Muna Songweera",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Myat Thazin Khine",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Nevra Sayin",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Nopwadee Wongsangiam",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Patcharawat Vongsrikul",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Pavani Pandey",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Phuririn Narapattaveebhorn",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Phuritat Tangvattanatam",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Raihana Leelard",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Venicenarin Inchandr",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Ziva Abbigail Barnard",  link: "https://drive.google.com/uc?export=download&id=" }
+            ],
+            "Young Scientist": [
+                { name: "Aarav Detchaiyasak",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Alessia Piedrahita",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Aryan Shukla",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Chanyaphak Aukramaeteepun",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Ethan Jasiel Sanchez Reynoso",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Htoo Myat Moe Oo",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Janaru Makhsat",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Jaturawich Khotmungkhun",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Jiratchaya Tangyusuk",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Kaewta Kitinai",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Kavinwit Tanasiribunchai",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Kornthanat Trakultanachai",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Kridtiteepongpit Chaviengpop",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Marjan Hussain",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Mohammad Bin Tareq",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Pavani Pandey",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Peeranat Amarananthakit",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Phumiphat Budhnarakul",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Rydvanali Yessimkhan",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Soha Shahzad",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Zahide Hilal Parilti",  link: "https://drive.google.com/uc?export=download&id=" },
+                { name: "Ziva Abbigail Barnard",  link: "https://drive.google.com/uc?export=download&id=" }
+             ]
+        };
+
+        let currentCategory = null;
+        let currentSubcategory = null;
+        let vantaEffect = null;
+
+        const mainMenu = document.getElementById('mainMenu');
+        const contentSection = document.getElementById('contentSection');
+        const sectionTitle = document.getElementById('sectionTitle');
+        const sectionDescription = document.getElementById('sectionDescription');
+        const projectListContainer = document.getElementById('projectListContainer');
+        const backToMainMenuBtn = document.getElementById('backToMainMenuBtn');
+        const backBtn = document.getElementById('backBtn');
+        const searchInput = document.getElementById('searchInput');
+        const mainHeaderTitle = document.getElementById('mainHeaderTitle');
+        const mainSubtitle = document.getElementById('mainSubtitle');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            vantaEffect = VANTA.NET({
+                el: "#vanta-bg",
+                mouseControls: true,
+                touchControls: true,
+                minHeight: 200.00,
+                minWidth: 200.00,
+                scale: 1.00,
+                scaleMobile: 1.00,
+                color: 0x00aaff,
+                backgroundColor: 0x212121
+            });
+            renderMainMenuButtons();
+        });
+
+        backToMainMenuBtn.addEventListener('click', showMainMenu);
+        backBtn.addEventListener('click', handleBack);
+        searchInput.addEventListener('input', handleSearch);
+
+        function showMainMenu() {
+            currentCategory = null;
+            currentSubcategory = null;
+            mainMenu.style.display = 'grid';
+            contentSection.style.display = 'none';
+            backToMainMenuBtn.style.display = 'none';
+
+            mainHeaderTitle.textContent = "Innovation Showcase 2025";
+            mainSubtitle.textContent = "Digital Certificates & Project Data";
+            renderMainMenuButtons();
+        }
+
+        function renderMainMenuButtons() {
+            mainMenu.innerHTML = '';
+            const categories = Object.keys(projectData);
+            categories.forEach(categoryName => {
+                const button = document.createElement('button');
+                button.className = 'menu-button';
+                button.textContent = categoryName;
+                button.addEventListener('click', () => {
+                    if (categoryName === "STEAM Street") {
+                        showSubcategories(categoryName);
+                    } else {
+                        showProjectList(categoryName);
+                    }
+                });
+                mainMenu.appendChild(button);
+            });
+        }
+
+        function showSubcategories(categoryName) {
+            currentCategory = categoryName;
+            mainMenu.style.display = 'none';
+            contentSection.style.display = 'block';
+            backToMainMenuBtn.style.display = 'block';
+            sectionTitle.textContent = categoryName;
+            sectionDescription.textContent = "Select a sub-category to view participants.";
+            searchInput.style.display = 'none';
+
+            const subcategories = Object.keys(projectData[categoryName]);
+            renderProjectList(subcategories, categoryName);
+            backBtn.style.display = 'none';
+        }
+
+        function showProjectList(categoryName, subcategoryName = null) {
+            currentCategory = categoryName;
+            currentSubcategory = subcategoryName;
+            mainMenu.style.display = 'none';
+            contentSection.style.display = 'block';
+            backToMainMenuBtn.style.display = 'block';
+            searchInput.style.display = 'flex';
+            searchInput.value = '';
+
+
+            let itemsToShow;
+            if (subcategoryName) {
+                itemsToShow = projectData[categoryName][subcategoryName];
+                sectionTitle.textContent = subcategoryName;
+                sectionDescription.textContent = `Participants for ${subcategoryName}`;
+                backBtn.style.display = 'block';
+            } else {
+                itemsToShow = projectData[categoryName];
+                sectionTitle.textContent = categoryName;
+                sectionDescription.textContent = `Participants and Certificates for ${categoryName}`;
+                if(categoryName === "STEAM Street") {
+                     backBtn.style.display = 'none';
+                } else {
+                     backBtn.style.display = 'block';
+                }
+            }
+            renderProjectList(itemsToShow);
+        }
+
+        function renderProjectList(items, parentCategory = null) {
+            projectListContainer.innerHTML = '';
+            if (items && items.length > 0) {
+                items.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'project-item';
+                    
+                    if (typeof item === 'string' && parentCategory) {
+                        itemElement.className = 'menu-button';
+                        itemElement.textContent = item;
+                        itemElement.addEventListener('click', () => {
+                            showProjectList(parentCategory, item);
+                        });
+                    } else {
+                        // Create a download button with the person's name (without .pdf extension)
+                        const downloadButton = document.createElement('button');
+                        downloadButton.className = 'download-certificate-btn';
+                        downloadButton.textContent = item.name;
+                        
+                        // Add click event to download the certificate
+                        downloadButton.addEventListener('click', () => {
+                            // Determine the folder path based on the current category
+                            let folderPath = '';
+                            if (currentCategory === 'DIY Rubber Band Plane Launching') {
+                                folderPath = 'DIY Rubber Band Plane Launching';
+                            } else if (currentCategory === 'Judges') {
+                                folderPath = 'JUDGES';
+                            } else if (currentCategory === 'Public Speaking') {
+                                folderPath = 'Public Speaking';
+                            } else if (currentCategory === 'Quiz Masters') {
+                                folderPath = 'Quiz Masters';
+                            } else if (currentCategory === 'Robot Maze Race') {
+                                folderPath = 'Robot Maze Race';
+                            } else if (currentCategory === 'Science Show') {
+                                folderPath = 'Science show';
+                            } else if (currentCategory === 'Spaghetti & Marshmallow Tower') {
+                                folderPath = 'Spaghetti & Marshmallow Tower';
+                            } else if (currentCategory === 'STEAM Street') {
+                                if (currentSubcategory === 'Game Category') {
+                                    folderPath = 'STEAM STREET/Game Category';
+                                } else if (currentSubcategory === 'Integrated Category') {
+                                    folderPath = 'STEAM STREET/Integrated Category';
+                                }
+                            } else if (currentCategory === 'Upcycled Fashion Show') {
+                                folderPath = 'Upcycled Fashion Show';
+                            } else if (currentCategory === 'Young Scientist') {
+                                folderPath = 'Young Scientist';
+                            } else if (currentCategory === 'TECHNICAL TEAM') {
+                                folderPath = 'TECHNICAL TEAM';
+                            }
+                            
+                            // Create the file path
+                            const fileName = `${item.name}.pdf`;
+                            const filePath = `${folderPath}/${fileName}`;
+                            
+                            // Create a temporary link element to trigger the download
+                            const link = document.createElement('a');
+                            link.href = filePath;
+                            link.download = fileName;
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                        });
+                        
+                        itemElement.appendChild(downloadButton);
+                    }
+                    projectListContainer.appendChild(itemElement);
+                });
+            } else {
+                projectListContainer.innerHTML = '<p style="text-align: center; color: var(--border-color);">No items available yet for this section.</p>';
+            }
+        }
+
+        function handleBack() {
+            if (currentSubcategory) {
+                showSubcategories(currentCategory);
+                currentSubcategory = null;
+            } else {
+                showMainMenu();
+            }
+        }
+
+        function handleSearch(event) {
+            const searchTerm = event.target.value.toLowerCase();
+            let itemsToFilter = [];
+
+            if (currentSubcategory) {
+                itemsToFilter = projectData[currentCategory][currentSubcategory];
+            } else if (currentCategory && currentCategory !== "STEAM Street") {
+                itemsToFilter = projectData[currentCategory];
+            }
+
+            const filteredItems = itemsToFilter.filter(item => 
+                item.name.toLowerCase().includes(searchTerm)
+            );
+            renderProjectList(filteredItems);
+        }
+        
+
+
+        window.onload = function () {
+            vantaEffect = VANTA.NET({
+                el: "#vanta-bg",
+                mouseControls: true,
+                touchControls: true,
+                minHeight: 200.00,
+                minWidth: 200.00,
+                scale: 1.00,
+                scaleMobile: 1.00,
+                color: 0x00aaff,
+                backgroundColor: 0x212121
+            });
+            renderMainMenuButtons();
+        }
+    </script>
+</body>
+</html>
